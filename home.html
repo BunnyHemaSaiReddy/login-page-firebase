@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the Auth App</h1>
+    <p>Please choose an option to continue:</p>
+    <div class="btn-group">
+      <a href="/login"><button class="email-btn">Log In</button></a>
+      <a href="/signup"><button class="email-btn">Sign Up</button></a>
+    </div>
+  </div>
+</body>
+</html>

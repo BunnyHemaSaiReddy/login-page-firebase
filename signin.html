@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In Options</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      .google-btn {
+        background-color: #db4437;
+        color: white;
+      }
+      
+      .email-btn {
+        background-color: #4285f4;
+        color: white;
+      }
+      
+      .facebook-btn {
+        background-color: #3b5998;
+        color: white;
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Choose a Sign-In Method</h2>
+    <button onclick="signInWithGoogle()" class="google-btn">Sign In with Google</button>
+    <br><br>
+    <a href="/login"><button class="email-btn">Sign In with Email</button></a>
+    <br><br>
+    <button class="facebook-btn" disabled>Facebook Sign-In (Coming Soon)</button>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_dvNAf19mcXXdLZjoHsgC8SmmLKcbKKg",
+      authDomain: "signup-login-b28f5.firebaseapp.com",
+      projectId: "signup-login-b28f5",
+      storageBucket: "signup-login-b28f5.appspot.com",
+      messagingSenderId: "946139293369",
+      appId: "1:946139293369:web:25c7ab86146ec144a35d68",
+      measurementId: "G-FQ8CE9TTK0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          const idToken = result.credential.idToken;
+          fetch('/google-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken: idToken })
+          })
+          .then(response => {
+            if (response.redirected) {
+              window.location.href = response.url;
+            } else {
+              alert("Something went wrong!");
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Google Sign-In Error:", error.message);
+        });
+    }
+  </script>
+</body>
+</html>
